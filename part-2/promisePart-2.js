@@ -41,21 +41,25 @@ let response = axios.get(`${BASEURL}/new/shuffle`)
     })
 
 btn.addEventListener('click', function () {
-
-    let newDeck = axios.get(`${BASEURL}/${deck_id}/draw`)
+    axios.get(`${BASEURL}/${deck_id}/draw`)
         .then(data => {
+
+            if (data.data.remaining === 0) {
+                btn.remove();
+            }
+
             let cardimg = data.data.cards[0].image
             let angle = Math.random() * 90 - 45;
             let randomX = Math.random() * 40 - 20;
             let randomY = Math.random() * 40 - 20;
-            const image = document.createElement('img')
-            image.src = cardimg
-            image.style.transform = angle;
-            image.style.x = randomX;
-            image.style.y = randomY;
+            const image = document.createElement('img');
+            image.src = cardimg;
+            image.style.transform = `rotate(${angle}deg)`;
+            image.style.transform = `translate(${randomX}, ${randomY})`;
+
             cardArea.append(image)
 
-            if (data.remaining === 0) $btn.remove();
+
         });
 
 });
